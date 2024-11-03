@@ -11,15 +11,14 @@ const Blog = require('../models/blog')
 // routes here
 
 // GET -> api/blogs
-blogRouter.get('/', (request, response, next) => {
-  Blog
-    .find({})
-    .then(blogs => {
-      response.json(blogs)
-    })
-    .catch(error => {
-      next(error)
-    })
+blogRouter.get('/', async (request, response, next) => {
+  try {
+    const blogEntries = await Blog.find({})
+    response.json(blogEntries)
+  }
+  catch (exception) {
+    next(exception)
+  }
 })
 
 // POST -> api/blogs
