@@ -23,8 +23,20 @@ blogRouter.get('/', async (request, response, next) => {
 
 // POST -> api/blogs
 blogRouter.post('/', (request, response, next) => {
-  const blog = new Blog(request.body)
-
+  let blog
+  // add likes attribute if not on request
+  if (!request.body.likes) {
+    const newBlog = {
+      title: request.body.title,
+      author: request.body.author,
+      url: request.body.url,
+      likes: 0
+    }
+    blog = new Blog(newBlog)
+  } else {
+    blog = new Blog(request.body)
+  }
+  // save the blog
   blog
     .save()
     .then(result => {
