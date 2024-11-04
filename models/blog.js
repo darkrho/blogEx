@@ -4,9 +4,15 @@ const Schema = mongoose.Schema
 // blog Schema
 
 const blogSchema = new Schema({
-  title: String,
+  title: {
+    type: String,
+    required: true,
+  },
   author: String,
-  url: String,
+  url: {
+    type: String,
+    required: true
+  },
   likes: Number
 })
 

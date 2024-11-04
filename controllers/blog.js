@@ -22,7 +22,7 @@ blogRouter.get('/', async (request, response, next) => {
 })
 
 // POST -> api/blogs
-blogRouter.post('/', (request, response, next) => {
+blogRouter.post('/', async (request, response, next) => {
   let blog
   // add likes attribute if not on request
   if (!request.body.likes) {
@@ -37,14 +37,13 @@ blogRouter.post('/', (request, response, next) => {
     blog = new Blog(request.body)
   }
   // save the blog
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
-    .catch(error => {
-      next(error)
-    })
+  try {
+    const result = await blog.save()
+    response.status(201).json(result)
+  }
+  catch (exception) {
+    next(exception)
+  }
 })
 
 
