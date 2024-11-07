@@ -46,5 +46,34 @@ blogRouter.post('/', async (request, response, next) => {
   }
 })
 
+// DELETE -> api/blogs/:id
+blogRouter.delete('/:id', async (request, response, next) => {
+  // get id from params
+  const id = request.params.id
+  // delete entry on the database
+  try {
+    await Blog.findByIdAndDelete(id)
+    response.status(204).end()
+  }
+  catch (exception) {
+    next(exception)
+  }
+})
+
+// PUT -> api/blogs/:id
+blogRouter.put('/:id', async (request, response, next) => {
+  // get id from params
+  const id = request.params.id
+  // update the likes +1 on the entry
+  try {
+    const entryToUpdate = await Blog.findById(id)
+    entryToUpdate.likes += 1
+    const entryUpdated = await Blog.findByIdAndUpdate(id, entryToUpdate, { new: true })
+    response.json(entryUpdated)
+  }
+  catch (exception) {
+    next(exception)
+  }
+})
 
 module.exports = blogRouter
